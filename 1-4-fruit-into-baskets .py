@@ -43,29 +43,36 @@ def solution_2(fruits):
     return max_pick
 
 
+# best implement
 @timer
 def solution_3(fruits):
-    max_pick = 0
-    tmp_list = [(0, fruits[0])]
-    for i, v in enumerate(fruits[1:], 1):
-        if v != tmp_list[-1][1]:
-            tmp_list.append((i, v))
-
-    # TODO: finish here
-    tmp_set = []
-    for i, v in tmp_list:
-        if v not in tmp_set:
-            tmp_set.append(v)
-    print(tmp_list)
-    return max_pick
-
+    max_number = 0
+    sliding_window = []
+    items_tmp = []
+    for i in fruits:
+        sliding_window.append(i)
+        if i not in items_tmp:
+            if len(items_tmp) == 2:
+                keep_item = sliding_window[-2]
+                items_tmp.remove(keep_item)
+                remove_item = items_tmp[0]
+                items_tmp = [keep_item, i]
+                remove_last_idx = sliding_window[::-1].index(remove_item)
+                sliding_window = sliding_window[-remove_last_idx:]
+            else:
+                items_tmp.append(i)
+                max_number = max(max_number, len(sliding_window))
+        else:
+            max_number = max(max_number, len(sliding_window))
+    return max_number
 
 # test = [1,2,1]                    # 3
-test = [3,3,3,1,2,1,1,2,3,3,4]    # 5
+# test = [3,3,3,1,2,1,1,2,3,3,4]    # 5
 # test = [0,1,2,2]                  # 3
 # test = [0]                        # 1
 # test = [1,0,3,4,3]                  # 3
 # test = [0 for _ in range(1000)]
+test = [4,1,1,1,3,1,7,5]
 
 # print(solution_1(test)) #51.8s
 # print(solution_2(test)) #51.8s
