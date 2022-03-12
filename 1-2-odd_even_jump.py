@@ -1,4 +1,4 @@
-from timer import timer
+from utils.timer import timer
 from collections import defaultdict
 
 

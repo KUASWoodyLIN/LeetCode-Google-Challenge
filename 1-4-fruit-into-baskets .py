@@ -1,4 +1,4 @@
-from timer import timer
+from utils.timer import timer
 
 @timer
 def solution_1(fruits):
@@ -45,7 +45,7 @@ def solution_2(fruits):
 
 # best implement
 @timer
-def solution_3(fruits):
+def sliding_window_3(fruits):
     max_number = 0
     sliding_window = []
     items_tmp = []
@@ -76,4 +76,4 @@ test = [4,1,1,1,3,1,7,5]
 
 # print(solution_1(test)) #51.8s
 # print(solution_2(test)) #51.8s
-print(solution_3(test)) #51.8s
+print(sliding_window_3(test)) #51.8s
