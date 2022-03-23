@@ -33,6 +33,8 @@ def solution(time: str) -> str:
     t_start = hour * 60 + minute
     t_list = [i for i in range(t_start+1, 60*24+1)] + [i for i in range(1, t_start+1)]
     t_set = set(time)
+    if len(t_set) == 2:
+        return time
     for t in t_list:
         new_time = "{:02d}:{:02d}".format(*divmod(t, 60))
         if set(new_time) <= t_set:
@@ -40,7 +42,8 @@ def solution(time: str) -> str:
 
 
 
-solution("19:34")
-solution("23:59")
+# solution("19:34")
+# solution("23:59")
+solution("00:00")
 
 
