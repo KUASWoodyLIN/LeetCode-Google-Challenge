@@ -54,13 +54,37 @@ def dp_solution_top_down(nums):
     return jump(nums, 0)
 
 
+@timer
+def dp_solution_bottom_up(nums):
+    if len(nums) == 1:
+        return True
+    memo = [0 for i in range(len(nums))]    # Unknown: 0, Good: 1, Bad: 2
+    memo[-1] = 1
+
+    for i in range(len(nums)-2, -1, -1):
+        furthest_jump = min(nums[i]+i, len(nums)-1)
+        for j in range(i+1, furthest_jump+1):
+            if memo[j] == 1:
+                memo[i] = 1
+                break
+    return memo[0] == 1
+
+
 recursive_solution([2,3,1,1,4])
 dp_solution([0,2,3])
 dp_solution([3,2,1,0,4])
 dp_solution([2,3,1,1,4])
 dp_solution([1,2,3])
+dp_solution([3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4])
 
 dp_solution_top_down([0,2,3])
 dp_solution_top_down([3,2,1,0,4])
 dp_solution_top_down([2,3,1,1,4])
 dp_solution_top_down([1,2,3])
+dp_solution_top_down([3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4])
+
+dp_solution_bottom_up([0,2,3])
+dp_solution_bottom_up([3,2,1,0,4])
+dp_solution_bottom_up([2,3,1,1,4])
+dp_solution_bottom_up([1,2,3])
+dp_solution_bottom_up([3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4,3,2,1,0,4])
