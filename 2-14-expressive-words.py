@@ -29,63 +29,44 @@ s and words[i] consist of lowercase letters.
 """
 
 from utils.timer import timer
-from collections import defaultdict
 
 
-def get_short_word(s):
-    short_word = ""
-    tmp = ""
-    for c in s:
-        if c not in tmp:
-            if len(tmp) > 2:
-                short_word += tmp[0]
-            else:
-                short_word += tmp
-            tmp = c
-        elif c in tmp:
-            tmp += c
-    if len(tmp) > 2:
-        short_word += tmp[0]
-    else:
-        short_word += tmp
-    return short_word
-
-
-def check_two_word(s1, s2):
-    pointer_1 = pointer_2 = 0
-    tmp_list = [False] * len(s1)
-    while (pointer_1 < len(s1)) and (pointer_2 < len(s2)):
-        if s1[pointer_1] == s2[pointer_2]:
-            tmp_list[pointer_1] = True
-            pointer_2 += 1
-            pointer_1 += 1
-        elif :
-            pointer_2 += 1
-    return all(tmp_list)
-
-def check_word(c_i_list, s2):
-    pointer_1 = pointer_2 = 0
-    tmp_list = [False] * len(s1)
-    while pointer_1 < len(s1) and pointer_2 < len(s2):
-        if s1[pointer_1] == s2[pointer_2]:
-            tmp_list[pointer_1] = True
-            pointer_2 += 1
+def word_to_arr(s):
+    arr = [s[0]]
+    for i in range(1, len(s)):
+        if s[i] == arr[-1][0]:
+            a = arr.pop()
+            arr.append(a+s[i])
         else:
-            pointer_1 += 1
-    return all(tmp_list)
+            arr.append(s[i])
+    return arr
+
+
+def check(arr1, arr2):
+    if len(arr1) != len(arr2):
+        return False
+    for i in range(len(arr1)):
+        if arr1[i] == arr2[i]:
+            continue
+        elif (arr1[i][0] == arr2[i][0]) and (len(arr1[i]) > len(arr2[i])) and (len(arr1[i]) >= 3):
+            continue
+        else:
+            return False
+    return True
+
 
 @timer
-def solution(s: str, words: list) -> int:
-    result = 0
-    org_short_word = get_short_word(s)
-    c_i_list = [(c, i) for c, i in enumerate(org_short_word)]
+def solution1(s: str, words: list) -> int:
+    count = 0
+    arr1 = word_to_arr(s)
     for w in words:
-        target_short_word = get_short_word(w)
-        if check_two_word(org_short_word, target_short_word):
-            result += 1
-    return result
+        arr2 = word_to_arr(w)
+        if check(arr1, arr2):
+            count += 1
+    return count
 
 
+solution1("heeellooo", ["hello", "hi", "helo"])      # Output: 1
+solution1("zzzzzyyyyy", ["zzyy","zy","zyy"])         # Output: 3
+solution1("aaa", ["aaaa"])                           # Output: 0
 
-solution("heeellooo", ["hello", "hi", "helo"])      # Output: 1
-solution("zzzzzyyyyy", ["zzyy","zy","zyy"])         # Output: 3
