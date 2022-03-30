@@ -35,6 +35,7 @@ lists[i] is sorted in ascending order.
 The sum of lists[i].length will not exceed 104.
 """
 from utils.timer import timer
+from queue import PriorityQueue
 
 
 class ListNode:
@@ -44,12 +45,6 @@ class ListNode:
 
 
 def create_list_node(lists):
-    # out_list_node = [[] for i in range(len(lists))]
-    # for i in range(len(lists)):
-    #     out_list_node[i].append(ListNode(lists[i][len(lists[i])-1]))
-    #     for j in range(len(lists[i])-2, -1, -1):
-    #         out_list_node[i].insert(0, ListNode(lists[i][j], out_list_node[i][0]))
-    # return out_list_node
     list_node = []
     for i in range(len(lists)):
         tmp = ListNode(val=lists[i][-1])
@@ -57,6 +52,7 @@ def create_list_node(lists):
             tmp = ListNode(val=lists[i][j], next=tmp)
         list_node.append(tmp)
     return list_node
+
 
 @timer
 def solution1(lists: list) -> list:
@@ -67,12 +63,28 @@ def solution1(lists: list) -> list:
             tmp.append(node)
             node = node.next
     tmp = sorted(tmp, key=lambda x: x.val)
+    for i in range(len(tmp)-1):
+        tmp[i].next = tmp[i+1]
+    return tmp[0] if tmp else None
 
-    return tmp
 
-
+@timer
+def solution2(lists: list) -> list:
+    head = point = ListNode(0)
+    q = PriorityQueue()
+    for l in lists:
+        if l:
+            q.put((l.val, l))
+    while not q.empty():
+        val, node = q.get()
+        point.next = ListNode(val)
+        point = point.next
+        node = node.next
+        if node:
+            q.put((node.val, node))
+    return head.next
 
 
 list_node_lists = create_list_node([[1, 4, 5], [1, 3, 4], [2, 6]])
-print(list_node_lists)
 solution1(list_node_lists)
+solution2(list_node_lists)
