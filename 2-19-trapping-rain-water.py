@@ -16,24 +16,9 @@ Output: 9
 """
 from utils.timer import timer
 
+
 @timer
 def solution1(height: list) -> int:
-    # left = 0
-    # right = 1
-    # total_water = 0
-    # while right < len(height) or left < len(height)-1:
-    #     if right == len(height):
-    #         left += 1
-    #         right = left + 1
-    #     elif height[right] >= height[left]:
-    #         for i in range(left+1, right):
-    #             total_water += min(height[left], height[right]) - height[i]
-    #         left = right
-    #         right += 1
-    #
-    #     else:
-    #         right += 1
-    # return total_water
     left = 0
     right = 1
     total_water = 0
@@ -49,23 +34,18 @@ def solution1(height: list) -> int:
 
         else:
             right += 1
-    else:
-        # right = left + 1
-        # right_max = (height[right], right)
-        # while right < len(height):
-        #     right += 1
-        #     if right_max[0] < height[right]:
-        #         right_max = (height[right], right)
-        last_left = left
-        right -= 1
-        while left >= last_left:
-            if height[left] >= height[right]:
-                for i in range(right-1, left, -1):
-                    total_water += min(height[left], height[right]) - height[i]
-                right = left
-                left -= 1
-            else:
-                left -= 1
+
+    last_left = left
+    left = len(height) -2
+    right = len(height) - 1
+    while left >= last_left:
+        if height[left] >= height[right]:
+            for i in range(right-1, left, -1):
+                total_water += min(height[left], height[right]) - height[i]
+            right = left
+            left -= 1
+        else:
+            left -= 1
     return total_water
 
 
