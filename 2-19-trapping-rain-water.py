@@ -18,6 +18,20 @@ from utils.timer import timer
 
 
 @timer
+def brute_force(height: list) -> int:
+    total_water = 0
+    for cur in range(1, len(height)-1):
+        left_max = right_max = 0
+        for i in height[:cur][::-1]:
+            left_max = max(left_max, i)
+        for j in height[cur+1:]:
+            right_max = max(right_max, j)
+        if (h := min(right_max, left_max)) > height[cur]:
+            total_water += h - height[cur]
+    return total_water
+
+
+@timer
 def solution1(height: list) -> int:
     left = 0
     right = 1
@@ -49,6 +63,31 @@ def solution1(height: list) -> int:
     return total_water
 
 
-solution1([0,1,0,2,1,0,1,3,2,1,2,1])        # Output: 6
-solution1([4,2,0,3,2,5])                    # Output: 9
-solution1([4,2,3])                            # Output: 1
+@timer
+def dp_solution(height: list) -> int:
+    total_water = 0
+    left_max = right_max = 0
+    left_max_list = []
+    right_max_list = []
+    for i, j in zip(range(len(height)), range(len(height)-1, -1, -1)):
+        left_max = max(left_max, height[i])
+        right_max = max(right_max, height[j])
+        left_max_list.append(left_max)
+        right_max_list.insert(0, right_max)
+    for i in range(1, len(height)-1):
+        total_water += min(left_max_list[i], right_max_list[i]) - height[i]
+    return total_water
+
+
+
+# brute_force([0,1,0,2,1,0,1,3,2,1,2,1])        # Output: 6
+# brute_force([4,2,0,3,2,5])                    # Output: 9
+# brute_force([4,2,3])                            # Output: 1
+#
+# solution1([0,1,0,2,1,0,1,3,2,1,2,1])        # Output: 6
+# solution1([4,2,0,3,2,5])                    # Output: 9
+# solution1([4,2,3])                            # Output: 1
+
+dp_solution([0,1,0,2,1,0,1,3,2,1,2,1])        # Output: 6
+dp_solution([4,2,0,3,2,5])                    # Output: 9
+dp_solution([4,2,3])                            # Output: 1
