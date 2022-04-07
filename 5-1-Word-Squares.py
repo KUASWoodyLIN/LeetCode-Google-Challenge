@@ -26,7 +26,9 @@ All words[i] have the same length.
 words[i] consists of only lowercase English letters.
 All words[i] are unique.
 """
+from collections import defaultdict
 from utils.timer import timer
+
 
 class Solution:
     def __init__(self):
@@ -54,7 +56,38 @@ class Solution:
                 self.backtracking(step+1, save_words_temp)
                 save_words_temp.pop()
 
+
+class SolutionV2:
+    def __init__(self):
+        self.save_words_temp = []
+        self.result = []
+        self.prefix_to_word = defaultdict(list)
+
+    @timer
+    def wordSquares(self, words: list) -> list:
+        self.N = len(words[0])
+        for w in words:
+            for i in range(1, self.N):
+                self.prefix_to_word[w[:i]].append(w)
+
+        for w in words:
+            save_words_temp = [w]
+            self.backtracking(1, save_words_temp)
+        return self.result
+
+    def backtracking(self, step, save_words_temp):
+        if self.N == step:
+            self.result.append(save_words_temp.copy())
+            return
+
+        prefix = ''.join([w[step] for w in save_words_temp])
+        for w in self.prefix_to_word.get(prefix, []):
+            save_words_temp.append(w)
+            self.backtracking(step + 1, save_words_temp)
+            save_words_temp.pop()
+
+
 s = Solution()
-s.wordSquares(["area","lead","wall","lady","ball"])
-# s.wordSquares(["abat","baba","atan","atal"])
+# s.wordSquares(["area","lead","wall","lady","ball"])
+s.wordSquares(["abat","baba","atan","atal"])
 # Output: [["baba","abat","baba","atal"],["baba","abat","baba","atan"]]
