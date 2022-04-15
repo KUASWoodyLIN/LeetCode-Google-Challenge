@@ -32,31 +32,29 @@ class Solution:
             plus_path = [start]
             self.ans_flag = False
             for nxt, v in self.search_dict[start].items():
+                plus_values = [v]
+                self.backtracking(nxt, end, plus_values, plus_path)
                 if self.ans_flag:
-                    continue
-                ans_list = [v]
-                self.backtracking(nxt, end, ans_list, plus_path)
-
+                    break
             if not self.ans_flag:
                 self.result_list.append(-1)
         return self.result_list
 
-    def backtracking(self, cur, end, ans_tmp, plus_path):
+    def backtracking(self, cur, end, plus_values, plus_path):
         if cur == end:
             ans = 1
-            for v in ans_tmp:
+            for v in plus_values:
                 ans *= v
             self.result_list.append(ans)
             self.ans_flag = True
         elif cur not in plus_path:
             plus_path.append(cur)
             for nxt, v in self.search_dict[cur].items():
+                plus_values.append(v)
+                self.backtracking(nxt, end, plus_values, plus_path)
+                plus_values.pop()
                 if self.ans_flag:
-                    continue
-                ans_tmp.append(v)
-                self.backtracking(nxt, end, ans_tmp, plus_path)
-                ans_tmp.pop()
-            plus_path.pop()
+                    break
 
 
 # equations = [["a","e"],["b","e"]]
