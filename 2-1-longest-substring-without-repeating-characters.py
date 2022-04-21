@@ -29,11 +29,9 @@ def brute_force_solution(s: str):
         for j in range(i, len(s)):
             if s[j] not in tmp_set:
                 tmp_set.add(s[j])
-                if (j == len(s) - 1):
-                    max_items = max(max_items, j - i + 1)
             else:
-                max_items = max(max_items, j - i)
                 break
+        max_items = max(max_items, len(tmp_set))
     return max_items
 
 
@@ -53,6 +51,21 @@ def sliding_window_solution(s: str):
             record_character_index = {v: idx for idx, v in enumerate(sliding_window, 1)}
         max_items = max(max_items, len(sliding_window))
     return max_items
+
+
+def sliding_window_solution_v2(s: str):
+    max_items = 0
+    window = {}
+    for i, v in enumerate(s):
+        if v not in window:
+            window[v] = i
+        else:
+            remove_idx = window[v]
+            window = {v: i for v, i in window.items() if i > remove_idx}
+            window[v] = i
+        max_items = max(max_items, len(window))
+    return max_items
+
 
 
 @timer
