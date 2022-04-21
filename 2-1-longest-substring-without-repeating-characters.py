@@ -53,6 +53,21 @@ def sliding_window_solution(s: str):
     return max_items
 
 
+def sliding_window_solution_v2(s: str):
+    max_items = 0
+    window = {}
+    for i, v in enumerate(s):
+        if v not in window:
+            window[v] = i
+        else:
+            remove_idx = window[v]
+            window = {v: i for v, i in window.items() if i > remove_idx}
+            window[v] = i
+        max_items = max(max_items, len(window))
+    return max_items
+
+
+
 @timer
 def two_pointer(s: str):
     chars = [0] * 128
