@@ -29,11 +29,9 @@ def brute_force_solution(s: str):
         for j in range(i, len(s)):
             if s[j] not in tmp_set:
                 tmp_set.add(s[j])
-                if (j == len(s) - 1):
-                    max_items = max(max_items, j - i + 1)
             else:
-                max_items = max(max_items, j - i)
                 break
+        max_items = max(max_items, len(tmp_set))
     return max_items
 
 
